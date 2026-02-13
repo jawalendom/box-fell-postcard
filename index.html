@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BOX F.E.L.L. Postcards</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #fff;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            color: #d4af37;
+            margin-bottom: 0.5rem;
+            letter-spacing: 3px;
+        }
+
+        .motto {
+            font-size: 1.1rem;
+            color: #c9a227;
+            font-style: italic;
+            letter-spacing: 2px;
+        }
+
+        .motto span {
+            margin: 0 0.5rem;
+        }
+
+        /* Main Layout */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: start;
+        }
+
+        /* Postcard Preview */
+        .postcard-container {
+            perspective: 1000px;
+        }
+
+        .postcard {
+            width: 6in;
+            height: 4in;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .postcard-front {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .postcard-image {
+            flex: 1;
+            background: linear-gradient(145deg, #1a1a4e, #0d0d3d);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .postcard-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .postcard-message-area {
+            padding: 1.5rem;
+            background: #faf8f5;
+            border-top: 3px solid #d4af37;
+            min-height: 120px;
+        }
+
+        .postcard-to {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .postcard-to strong {
+            color: #1a1a4e;
+        }
+
+        .postcard-message {
+            font-size: 1rem;
+            color: #333;
+            font-style: italic;
+            line-height: 1.5;
+        }
+
+        .postcard-from {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #666;
+            text-align: right;
+        }
+
+        .postcard-stamp {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 70px;
+            height: 85px;
+            background: #faf8f5;
+            border: 2px dashed #d4af37;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.6rem;
+            color: #1a1a4e;
+            text-align: center;
+            padding: 5px;
+        }
+
+        .postcard-stamp img {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+            margin-bottom: 3px;
+        }
+
+        .stamp-text {
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        /* Form Section */
+        .form-section {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 2rem;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .form-section h2 {
+            color: #d4af37;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #c9a227;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 6px;
+            color: #fff;
+            font-size: 1rem;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: #d4af37;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: rgba(255,255,255,0.4);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #d4af37, #c9a227);
+            border: none;
+            border-radius: 6px;
+            color: #1a1a2e;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 1rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid #d4af37;
+            color: #d4af37;
+            margin-top: 0.5rem;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        /* Success Message */
+        .success-message {
+            display: none;
+            background: rgba(46, 125, 50, 0.2);
+            border: 1px solid #4caf50;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .success-message.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Footer Motto */
+        .footer-motto {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .footer-motto .values {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-motto .value {
+            text-align: center;
+        }
+
+        .footer-motto .value-letter {
+            font-size: 2rem;
+            color: #d4af37;
+            font-weight: bold;
+        }
+
+        .footer-motto .value-word {
+            font-size: 0.8rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .footer-motto .est {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Mobile */
+        @media (max-width: 900px) {
+            body {
+                padding: 1rem;
+            }
+
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .header {
+                margin-bottom: 1.5rem;
+            }
+
+            .header h1 {
+                font-size: 1.5rem;
+                letter-spacing: 2px;
+            }
+
+            .motto {
+                font-size: 0.8rem;
+            }
+
+            .postcard {
+                width: 100%;
+                height: auto;
+                aspect-ratio: 6 / 4;
+            }
+
+            .postcard-message-area {
+                padding: 1rem;
+                min-height: 80px;
+            }
+
+            .postcard-to {
+                font-size: 0.75rem;
+            }
+
+            .postcard-message {
+                font-size: 0.85rem;
+            }
+
+            .postcard-from {
+                font-size: 0.75rem;
+            }
+
+            .postcard-stamp {
+                width: 50px;
+                height: 60px;
+                top: 10px;
+                right: 10px;
+                font-size: 0.5rem;
+            }
+
+            .postcard-stamp img {
+                width: 35px;
+                height: 35px;
+            }
+
+            .form-section {
+                padding: 1.5rem;
+                border-radius: 8px;
+            }
+
+            .form-section h2 {
+                font-size: 1.2rem;
+                margin-bottom: 1rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group {
+                margin-bottom: 1rem;
+            }
+
+            .btn {
+                width: 100%;
+                padding: 1rem;
+                font-size: 1rem;
+            }
+
+            .footer-motto {
+                margin-top: 2rem;
+                padding-top: 1.5rem;
+            }
+
+            .footer-motto .values {
+                gap: 0.75rem;
+            }
+
+            .footer-motto .value-letter {
+                font-size: 1.5rem;
+            }
+
+            .footer-motto .value-word {
+                font-size: 0.7rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>BOX F.E.L.L. POSTCARDS</h1>
+            <p class="motto">
+                <span>Family</span>•
+                <span>Education</span>•
+                <span>Loyalty</span>•
+                <span>Legacy</span>
+            </p>
+        </header>
+
+        <div class="main-content">
+            <!-- Postcard Preview -->
+            <div class="postcard-container">
+                <div class="postcard">
+                    <div class="postcard-front">
+                        <div class="postcard-image">
+                            <img src="instagram_edited.jpg" alt="BOX Brothers">
+                            <div class="postcard-stamp">
+                                <img src="jP2aSXBI_400x400.jpeg" alt="stamp">
+                                <span class="stamp-text">EST. 2013</span>
+                            </div>
+                        </div>
+                        <div class="postcard-message-area">
+                            <div class="postcard-to">To: <strong id="previewTo">Recipient Name</strong></div>
+                            <div class="postcard-message" id="previewMessage">Your message will appear here...</div>
+                            <div class="postcard-from">— <span id="previewFrom">Your Name</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Section -->
+            <div class="form-section">
+                <h2>Create Your Postcard</h2>
+                <form id="postcardForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Your Name</label>
+                            <input type="text" id="senderName" placeholder="Enter your name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Recipient Name</label>
+                            <input type="text" id="recipientName" placeholder="Recipient's name" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Your Message</label>
+                        <textarea id="message" placeholder="Write your message here..." required></textarea>
+                    </div>
+
+                    <button type="button" class="btn" id="shareBtn">Share</button>
+                    <button type="button" class="btn btn-secondary" id="downloadBtn">Download Postcard</button>
+
+                    <div class="success-message" id="successMessage">
+                        <p>Your postcard has been downloaded!</p>
+                        <p style="color: #888; font-size: 0.9rem; margin-top: 0.5rem;">Ready to print or attach to email/text.</p>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <footer class="footer-motto">
+            <div class="values">
+                <div class="value">
+                    <div class="value-letter">F</div>
+                    <div class="value-word">Family</div>
+                </div>
+                <div class="value">
+                    <div class="value-letter">E</div>
+                    <div class="value-word">Education</div>
+                </div>
+                <div class="value">
+                    <div class="value-letter">L</div>
+                    <div class="value-word">Loyalty</div>
+                </div>
+                <div class="value">
+                    <div class="value-letter">L</div>
+                    <div class="value-word">Legacy</div>
+                </div>
+            </div>
+            <p class="est">Beta Omega Chi • Established 2013</p>
+        </footer>
+    </div>
+
+    <script>
+        // Form elements
+        const senderName = document.getElementById('senderName');
+        const recipientName = document.getElementById('recipientName');
+        const message = document.getElementById('message');
+
+        // Preview elements
+        const previewTo = document.getElementById('previewTo');
+        const previewFrom = document.getElementById('previewFrom');
+        const previewMessage = document.getElementById('previewMessage');
+
+        // Live preview updates
+        senderName.addEventListener('input', () => {
+            previewFrom.textContent = senderName.value || 'Your Name';
+        });
+
+        recipientName.addEventListener('input', () => {
+            previewTo.textContent = recipientName.value || 'Recipient Name';
+        });
+
+        message.addEventListener('input', () => {
+            previewMessage.textContent = message.value || 'Your message will appear here...';
+        });
+
+        // Load a same-origin image for canvas export (no taint)
+        function loadBaseImage(relativePath) {
+            return new Promise(function(resolve, reject) {
+                var img = new Image();
+                img.crossOrigin = 'anonymous';
+
+                img.onload = function() {
+                    // Use decode() if available for guaranteed rendering readiness
+                    if (img.decode) {
+                        img.decode().then(function() {
+                            resolve(img);
+                        }).catch(function() {
+                            // decode() failed but image loaded, still usable
+                            resolve(img);
+                        });
+                    } else {
+                        resolve(img);
+                    }
+                };
+
+                img.onerror = function() {
+                    reject(new Error('Failed to load image: ' + relativePath + '. Make sure you are running a local server (not file://).'));
+                };
+
+                // Set src AFTER setting crossOrigin and handlers
+                img.src = relativePath;
+            });
+        }
+
+        // Draw image with "cover" behavior (fill and crop)
+        function drawImageCover(ctx, img, x, y, w, h) {
+            var imgRatio = img.width / img.height;
+            var targetRatio = w / h;
+            var srcX, srcY, srcW, srcH;
+
+            if (imgRatio > targetRatio) {
+                // Image is wider - crop sides
+                srcH = img.height;
+                srcW = img.height * targetRatio;
+                srcX = (img.width - srcW) / 2;
+                srcY = 0;
+            } else {
+                // Image is taller - crop top/bottom
+                srcW = img.width;
+                srcH = img.width / targetRatio;
+                srcX = 0;
+                srcY = (img.height - srcH) / 2;
+            }
+
+            ctx.drawImage(img, srcX, srcY, srcW, srcH, x, y, w, h);
+        }
+
+        // Create postcard canvas in landscape mode (6x4 ratio)
+        function createPostcardCanvas(scale) {
+            // Fixed landscape dimensions (6:4 ratio = 1.5:1)
+            var baseWidth = 576;  // 6 inches at 96 DPI
+            var baseHeight = 384; // 4 inches at 96 DPI
+
+            var widthPx = Math.round(baseWidth * scale);
+            var heightPx = Math.round(baseHeight * scale);
+
+            var canvas = document.createElement('canvas');
+            canvas.width = widthPx;
+            canvas.height = heightPx;
+            var ctx = canvas.getContext('2d');
+
+            return { canvas: canvas, ctx: ctx, width: widthPx, height: heightPx, scale: scale, baseWidth: baseWidth, baseHeight: baseHeight };
+        }
+
+        // Render postcard to canvas (matching webpage preview exactly)
+        function renderPostcard(scale) {
+            return new Promise(function(resolve, reject) {
+                var setup = createPostcardCanvas(scale);
+                var canvas = setup.canvas;
+                var ctx = setup.ctx;
+                var w = setup.width;
+                var h = setup.height;
+                var s = scale; // multiplier
+
+                // Fixed landscape proportions - image takes ~69% of height
+                var imageHeightRatio = 0.69;
+                var imageHeight = h * imageHeightRatio;
+
+                // Load both images fresh for clean canvas (same-origin, no taint)
+                Promise.all([
+                    loadBaseImage('./instagram_edited.jpg'),
+                    loadBaseImage('./jP2aSXBI_400x400.jpeg')
+                ]).then(function(images) {
+                    var mainImg = images[0];
+                    var crestImg = images[1];
+
+                    // Background
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fillRect(0, 0, w, h);
+
+                    // Draw dark blue background for image area
+                    ctx.fillStyle = '#1a1a4e';
+                    ctx.fillRect(0, 0, w, imageHeight);
+
+                    // Draw main image with cover behavior
+                    drawImageCover(ctx, mainImg, 0, 0, w, imageHeight);
+
+                    // Draw stamp in top right (matching CSS: 70px x 85px, 15px from edge)
+                    var stampW = 70 * s;
+                    var stampH = 85 * s;
+                    var stampX = w - stampW - (15 * s);
+                    var stampY = 15 * s;
+
+                    // Stamp background
+                    ctx.fillStyle = '#faf8f5';
+                    ctx.fillRect(stampX, stampY, stampW, stampH);
+
+                    // Stamp border (dashed)
+                    ctx.strokeStyle = '#d4af37';
+                    ctx.lineWidth = 2 * s;
+                    ctx.setLineDash([4 * s, 4 * s]);
+                    ctx.strokeRect(stampX, stampY, stampW, stampH);
+                    ctx.setLineDash([]);
+
+                    // Draw crest in stamp (matching CSS: 50px x 50px)
+                    var crestSize = 50 * s;
+                    var crestX = stampX + (stampW - crestSize) / 2;
+                    var crestY = stampY + (5 * s);
+                    ctx.drawImage(crestImg, crestX, crestY, crestSize, crestSize);
+
+                    // Stamp text (matching CSS: 0.6rem ≈ 9.6px, bold)
+                    ctx.fillStyle = '#1a1a4e';
+                    ctx.font = 'bold ' + (9.6 * s) + 'px Georgia, serif';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('EST. 2013', stampX + stampW / 2, stampY + stampH - (8 * s));
+
+                    // Message area (bottom portion)
+                    var msgY = imageHeight;
+                    var msgH = h - imageHeight;
+
+                    // Gold border line (matching CSS: 3px solid)
+                    ctx.fillStyle = '#d4af37';
+                    ctx.fillRect(0, msgY, w, 3 * s);
+
+                    // Message background
+                    ctx.fillStyle = '#faf8f5';
+                    ctx.fillRect(0, msgY + (3 * s), w, msgH - (3 * s));
+
+                    // Padding (matching CSS: 1.5rem = 24px)
+                    var padX = 24 * s;
+                    var padY = 24 * s;
+
+                    // "To:" line (matching CSS: 0.9rem ≈ 14.4px)
+                    ctx.fillStyle = '#666666';
+                    ctx.font = (14.4 * s) + 'px Georgia, serif';
+                    ctx.textAlign = 'left';
+                    var toY = msgY + padY + (14 * s);
+                    ctx.fillText('To: ', padX, toY);
+
+                    // Recipient name (bold)
+                    ctx.fillStyle = '#1a1a4e';
+                    ctx.font = 'bold ' + (14.4 * s) + 'px Georgia, serif';
+                    var toTextWidth = ctx.measureText('To: ').width;
+                    ctx.fillText(recipientName.value || 'Recipient Name', padX + toTextWidth, toY);
+
+                    // Message text (matching CSS: 1rem = 16px, italic)
+                    ctx.fillStyle = '#333333';
+                    ctx.font = 'italic ' + (16 * s) + 'px Georgia, serif';
+                    var msgText = message.value || 'Your message will appear here...';
+
+                    // Word wrap message (matching CSS: line-height 1.5)
+                    var maxWidth = w - (padX * 2);
+                    var lineHeight = 16 * 1.5 * s; // 24px at 1x
+                    var words = msgText.split(' ');
+                    var line = '';
+                    var y = toY + (8 * s) + lineHeight; // margin-bottom: 0.5rem = 8px
+
+                    for (var i = 0; i < words.length; i++) {
+                        var testLine = line + words[i] + ' ';
+                        var metrics = ctx.measureText(testLine);
+                        if (metrics.width > maxWidth && i > 0) {
+                            ctx.fillText(line.trim(), padX, y);
+                            line = words[i] + ' ';
+                            y += lineHeight;
+                        } else {
+                            line = testLine;
+                        }
+                    }
+                    ctx.fillText(line.trim(), padX, y);
+
+                    // "From:" line (matching CSS: 0.9rem, right-aligned)
+                    ctx.fillStyle = '#666666';
+                    ctx.font = (14.4 * s) + 'px Georgia, serif';
+                    ctx.textAlign = 'right';
+                    ctx.fillText('— ' + (senderName.value || 'Your Name'), w - padX, h - padY);
+
+                    resolve(canvas);
+                }).catch(function(err) {
+                    console.error('Error rendering postcard:', err);
+                    reject(err);
+                });
+            });
+        }
+
+        // Download postcard as PNG
+        function downloadPostcard() {
+            var scale = 3; // High quality
+
+            return renderPostcard(scale).then(function(canvas) {
+                return new Promise(function(resolve, reject) {
+                    canvas.toBlob(function(blob) {
+                        if (!blob) {
+                            reject(new Error('Failed to create blob'));
+                            return;
+                        }
+
+                        var url = URL.createObjectURL(blob);
+                        var link = document.createElement('a');
+                        link.href = url;
+                        link.download = 'BOX_FELL_Postcard_' + scale + 'x.png';
+                        link.style.display = 'none';
+                        document.body.appendChild(link);
+                        link.click();
+
+                        setTimeout(function() {
+                            document.body.removeChild(link);
+                            URL.revokeObjectURL(url);
+                            resolve(canvas);
+                        }, 100);
+                    }, 'image/png');
+                });
+            });
+        }
+
+        // Download button
+        document.getElementById('downloadBtn').addEventListener('click', function() {
+            var btn = document.getElementById('downloadBtn');
+            btn.textContent = 'Creating...';
+            btn.disabled = true;
+
+            downloadPostcard().then(function() {
+                btn.textContent = 'Download Postcard';
+                btn.disabled = false;
+                document.getElementById('successMessage').classList.add('show');
+                setTimeout(function() {
+                    document.getElementById('successMessage').classList.remove('show');
+                }, 3000);
+            }).catch(function(err) {
+                console.error('Download error:', err);
+                btn.textContent = 'Download Postcard';
+                btn.disabled = false;
+                alert('Error creating postcard: ' + err.message);
+            });
+        });
+
+        // Share button - uses native share sheet on mobile
+        document.getElementById('shareBtn').addEventListener('click', async function() {
+            var btn = document.getElementById('shareBtn');
+            var originalText = btn.textContent;
+            btn.textContent = 'Preparing...';
+            btn.disabled = true;
+
+            try {
+                // Render the postcard
+                var scale = 3; // High quality
+                var canvas = await renderPostcard(scale);
+
+                // Convert canvas to blob
+                var blob = await new Promise(function(resolve) {
+                    canvas.toBlob(resolve, 'image/png');
+                });
+
+                // Create a File from the blob
+                var file = new File([blob], 'BOX_FELL_Postcard.png', { type: 'image/png' });
+
+                // Try to share with file first
+                if (navigator.share) {
+                    try {
+                        await navigator.share({
+                            title: 'BOX F.E.L.L. Postcard',
+                            text: 'Check out this postcard from BOX F.E.L.L.! Family. Education. Loyalty. Legacy.',
+                            files: [file]
+                        });
+                        btn.textContent = 'Shared!';
+                        setTimeout(function() {
+                            btn.textContent = originalText;
+                            btn.disabled = false;
+                        }, 2000);
+                        return;
+                    } catch (fileErr) {
+                        // File sharing failed, try without file
+                        console.log('File share failed, trying text only:', fileErr);
+                        try {
+                            await navigator.share({
+                                title: 'BOX F.E.L.L. Postcard',
+                                text: 'Check out this postcard from BOX F.E.L.L.! Family. Education. Loyalty. Legacy.'
+                            });
+                            // Also download the image so they can attach it
+                            var url = URL.createObjectURL(blob);
+                            var link = document.createElement('a');
+                            link.href = url;
+                            link.download = 'BOX_FELL_Postcard.png';
+                            link.click();
+                            URL.revokeObjectURL(url);
+
+                            btn.textContent = originalText;
+                            btn.disabled = false;
+                            return;
+                        } catch (textErr) {
+                            if (textErr.name === 'AbortError') {
+                                btn.textContent = originalText;
+                                btn.disabled = false;
+                                return;
+                            }
+                            throw textErr;
+                        }
+                    }
+                } else {
+                    // No share API - fall back to download
+                    var url = URL.createObjectURL(blob);
+                    var link = document.createElement('a');
+                    link.href = url;
+                    link.download = 'BOX_FELL_Postcard.png';
+                    link.click();
+                    URL.revokeObjectURL(url);
+
+                    alert('Image downloaded! You can share it from your Photos app.');
+                    btn.textContent = originalText;
+                    btn.disabled = false;
+                }
+            } catch (err) {
+                console.error('Share error:', err);
+                btn.textContent = originalText;
+                btn.disabled = false;
+                if (err.name !== 'AbortError') {
+                    alert('Error sharing: ' + err.message);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
