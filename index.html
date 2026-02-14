@@ -805,6 +805,12 @@
                         }, 2000);
                         return;
                     } catch (fileErr) {
+                        // User cancelled - just reset button
+                        if (fileErr.name === 'AbortError') {
+                            btn.textContent = originalText;
+                            btn.disabled = false;
+                            return;
+                        }
                         // File sharing failed, try without file
                         console.log('File share failed, trying text only:', fileErr);
                         try {
@@ -840,17 +846,13 @@
                     link.click();
                     URL.revokeObjectURL(url);
 
-                    alert('Image downloaded! You can share it from your Photos app.');
                     btn.textContent = originalText;
                     btn.disabled = false;
                 }
             } catch (err) {
-                console.error('Share error:', err);
+                // Silently handle all errors
                 btn.textContent = originalText;
                 btn.disabled = false;
-                if (err.name !== 'AbortError') {
-                    alert('Error sharing: ' + err.message);
-                }
             }
         });
     </script>
