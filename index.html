@@ -795,8 +795,7 @@
                 if (navigator.share) {
                     try {
                         await navigator.share({
-                            title: 'BOX Love Letter',
-                            text: (senderName.value || 'Someone') + ' has made you a BOX love letter! 💙💛 Happy Black History Month from Beta Omega Chi!',
+                            text: (senderName.value || 'Someone') + ' has made you a BOX postcard! 💙💛 Happy Black History Month from Beta Omega Chi!',
                             files: [file]
                         });
                         btn.textContent = 'Shared!';
@@ -810,8 +809,7 @@
                         console.log('File share failed, trying text only:', fileErr);
                         try {
                             await navigator.share({
-                                title: 'BOX Love Letter',
-                                text: (senderName.value || 'Someone') + ' has made you a BOX love letter! 💙💛 Happy Black History Month from Beta Omega Chi!'
+                                text: (senderName.value || 'Someone') + ' has made you a BOX postcard! 💙💛 Happy Black History Month from Beta Omega Chi!'
                             });
                             // Also download the image so they can attach it
                             var url = URL.createObjectURL(blob);
