@@ -92,7 +92,6 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            object-position: center top;
         }
 
         .postcard-message-area {
@@ -612,7 +611,7 @@
                 srcW = img.width;
                 srcH = img.width / targetRatio;
                 srcX = 0;
-                srcY = 0;
+                srcY = currentPhotoIndex === 1 ? 0 : (img.height - srcH) / 2;
             }
 
             ctx.drawImage(img, srcX, srcY, srcW, srcH, x, y, w, h);
@@ -803,6 +802,7 @@
         function setPhoto(index) {
             currentPhotoIndex = index;
             postcardImg.src = photos[index];
+            postcardImg.style.objectPosition = index === 1 ? 'center top' : 'center center';
             document.getElementById('btnAlumni').classList.toggle('active', index === 0);
             document.getElementById('btnActive').classList.toggle('active', index === 1);
         }
