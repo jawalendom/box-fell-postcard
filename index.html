@@ -249,6 +249,46 @@
             background: rgba(212, 175, 55, 0.1);
         }
 
+        .photo-toggle {
+            display: flex;
+            gap: 0;
+            margin-bottom: 0.75rem;
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            border-radius: 6px;
+            overflow: hidden;
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .toggle-option {
+            padding: 0.5rem 1.5rem;
+            background: transparent;
+            border: none;
+            color: rgba(212, 175, 55, 0.5);
+            font-size: 0.85rem;
+            font-family: inherit;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .toggle-option:first-child {
+            border-right: 1px solid rgba(212, 175, 55, 0.4);
+        }
+
+        .toggle-option:hover {
+            color: #d4af37;
+            background: rgba(212, 175, 55, 0.08);
+        }
+
+        .toggle-option.active {
+            background: rgba(212, 175, 55, 0.15);
+            color: #d4af37;
+            font-weight: bold;
+        }
+
         /* Success Message */
         .success-message {
             display: none;
@@ -425,6 +465,10 @@
         <div class="main-content">
             <!-- Postcard Preview -->
             <div class="postcard-container">
+                <div class="photo-toggle">
+                    <button class="toggle-option active" id="btnAlumni" onclick="setPhoto(0)">Alumni</button>
+                    <button class="toggle-option" id="btnActive" onclick="setPhoto(1)">Active Members</button>
+                </div>
                 <div class="postcard">
                     <div class="postcard-front">
                         <div class="postcard-image">
@@ -606,7 +650,7 @@
 
                 // Load both images fresh for clean canvas (same-origin, no taint)
                 Promise.all([
-                    loadBaseImage('./instagram_edited.jpg'),
+                    loadBaseImage(photos[currentPhotoIndex]),
                     loadBaseImage('./jP2aSXBI_400x400.jpeg')
                 ]).then(function(images) {
                     var mainImg = images[0];
@@ -748,6 +792,18 @@
                     }, 'image/png');
                 });
             });
+        }
+
+        // Photo toggle
+        var photos = ['./instagram_edited.jpg', './photo_new.png'];
+        var currentPhotoIndex = 0;
+        var postcardImg = document.querySelector('.postcard-image img');
+
+        function setPhoto(index) {
+            currentPhotoIndex = index;
+            postcardImg.src = photos[index];
+            document.getElementById('btnAlumni').classList.toggle('active', index === 0);
+            document.getElementById('btnActive').classList.toggle('active', index === 1);
         }
 
         // Download button
