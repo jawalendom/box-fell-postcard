@@ -466,13 +466,13 @@
             <!-- Postcard Preview -->
             <div class="postcard-container">
                 <div class="photo-toggle">
-                    <button class="toggle-option active" id="btnAlumni" onclick="setPhoto(0)">Alumni</button>
-                    <button class="toggle-option" id="btnActive" onclick="setPhoto(1)">Active Members</button>
+                    <button class="toggle-option" id="btnAlumni" onclick="setPhoto(0)">Alumni</button>
+                    <button class="toggle-option active" id="btnActive" onclick="setPhoto(1)">Active Members</button>
                 </div>
                 <div class="postcard">
                     <div class="postcard-front">
                         <div class="postcard-image">
-                            <img src="instagram_edited.jpg" alt="BOX Brothers">
+                            <img src="photo_new.png" alt="BOX Brothers" style="object-position: center top;">
                             <div class="postcard-stamp">
                                 <img src="jP2aSXBI_400x400.jpeg" alt="stamp">
                                 <span class="stamp-text">EST. 2013</span>
@@ -796,7 +796,7 @@
 
         // Photo toggle
         var photos = ['./instagram_edited.jpg', './photo_new.png'];
-        var currentPhotoIndex = 0;
+        var currentPhotoIndex = 1;
         var postcardImg = document.querySelector('.postcard-image img');
 
         function setPhoto(index) {
